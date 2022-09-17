@@ -1,10 +1,13 @@
 package io.pragra.framework.testcase;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import io.pragra.framework.conf.Configuration;
 import io.pragra.framework.drivermanager.DriverManager;
 import io.pragra.framework.listeners.ScreenShotListener;
 import io.pragra.framework.pages.BlackTopNav;
 import io.pragra.framework.pages.RequestDemoPage;
+import io.pragra.framework.report.HtmlReports;
 import io.pragra.framework.utils.CaptureTypeEnum;
 import io.pragra.framework.utils.CoreUtils;
 import org.openqa.selenium.*;
@@ -14,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import javax.swing.text.html.HTMLEditorKit;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -22,10 +26,12 @@ public class DemoTest {
     WebDriver driver;
     BlackTopNav topNav;
 
+
     @BeforeSuite
     public void setUp() {
         driver = DriverManager.getDriver();
         driver.get("https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver");
+
         //topNav = new BlackTopNav(driver);
     }
 
@@ -62,18 +68,26 @@ public class DemoTest {
 
         WebElement hidden = driver.findElement(By.id("hidden"));
 
-        Assert.fail();
+
+
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(hidden));
         element.click();
 
 
 
+
+    }
+
+    @Test
+    public void testFail() {
+        Assert.fail();
     }
 
     @AfterSuite
     public void tearDown() throws InterruptedException {
         Thread.sleep(20000);
         driver.quit();
+        HtmlReports.flushReport();
     }
 }
 
